@@ -83,8 +83,27 @@ The results of 100 runs yielded a combination that provided an accuracy of 92.7%
 The model that made the cut for deployment was the hyperdrive tuned model with the best accuracy.
 <img width="2029" alt="capstone_hyperdrive_model_endpoint" src="https://user-images.githubusercontent.com/28558135/134452311-2991ecbd-d0d2-4d3a-87d1-07ddf852c85a.png">
 
-To use this endpoint and receive a prediction from it you have to submit a json data object like this, with a method of "predict".
+Deploying the model was possibly the most difficult part of this project since the instructor only covered how to do it for an AutoML model and through the GUI. The hyperparameter tuning model required that we compose a score.py, InferenceConfig, environment.yml, and a deployment configuration. After a lot of troubleshooting and reading documentation I decided to grab the score.py from the AutoML run and repurpose it for the hyperdrive parameter run which turned out to work just fine. The environment.yml was composed using the same dependencies as the AutoML run and this also worked for the hyperdrive parameter deployment. The inference config included both of these assets and the deployment config was set to was is standard in an AutoML deployment which is 1 cpu_core and 2gb of memory.
+
 ```
+from azureml.core.model import InferenceConfig
+from azureml.core.webservice import AciWebservice
+service_name = "hyperdrive-model-service"
+deploy_env = Environment.from_conda_specification(name="project_environment",file_path="conda_env.yml")
+inference_config = InferenceConfig(entry_script="./score.py", environment=deploy_env)
+deployment_config = AciWebservice.deploy_configuration(cpu_cores = 1, memory_gb = 2)
+service = Model.deploy(workspace=ws,
+                          name=service_name,
+                          models=[model],
+                          inference_config=inference_config,
+                          deployment_config=deployment_config,
+                          overwrite=True)
+                          
+service.wait_for_deployment(show_output=True)
+```
+To use this endpoint and receive a prediction from it you have to submit a json data object like this, with a method of "predict". Json dump this data object into a variable and include it as the body of the request. The endpoint was not secured with an API key so only a header with the conent type is needed as shown below. In fact, since I have not closed my endpoint prior to submitting this project you can run the below code and receive a response from my deployed endpoint. I will leave the endpoint open until the assignment is approved.
+```
+scoring_uri = 'http://b5f0f797-f0d3-4647-af72-4462aa93ff41.eastus.azurecontainer.io/score'
 data = {
   "Inputs":{
       "data":
@@ -122,6 +141,14 @@ data = {
   "method":"predict"
 
     }
+    input_data = json.dumps(data)
+with open("data.json", "w") as _f:
+    _f.write(input_data)
+
+
+headers = {'Content-Type': 'application/json'}
+
+resp = requests.post(scoring_uri, input_data, headers=headers)
 ```
 The response will be an array of "Results", where a 0 is a "No Heart Failure" outcome and a 1 is a "Heart Failure" outcome in the order of the data that was sent like this. These values can be changed to a no and yes respectively once received.
 ```
