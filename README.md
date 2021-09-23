@@ -128,10 +128,8 @@ The response will be an array of "Results", where a 0 is a "No Heart Failure" ou
 "Results": [0, 1]}
 ```
 ## Screen Recording
-*TODO* Provide a link to a screen recording of the project in action. Remember that the screencast should demonstrate:
-- A working model
-- Demo of the deployed  model
-- Demo of a sample request sent to the endpoint and its response
+
+https://youtu.be/T1L0DTCtNfE
 
 ## Standout Suggestions
 My standout was to turn the model into an onnx model to have improved portability to other platforms. I demonstrate this at the end of the hyperparameter_tuning.ipynb file, but here is the code for a quick look.
