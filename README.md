@@ -5,7 +5,11 @@
 This project was intended to explore and prove conceptual and practical knowledge of the Azure ML Studio environment and specifically to train and deploy the best machine learning model possible into a full production environment. The approaches used were the Hyperdrive Parameter Tuning and AutoML features of Azure ML Studio. This project was written to be plug-and-play for anyone who wishes to run this in their own environment. To do so, simply replace the config file with your own from Azure ML Studio and run the cells in the order they are presented.
 
 ## Project Set Up and Installation
-*OPTIONAL:* If your project has any special installation steps, this is where you should put it. To turn this project into a professional portfolio project, you are encouraged to explain how to set up this project in AzureML.
+To run this project:
+  - Create compute and compute cluster resources that match the names provided in the notebooks.
+  - Replace the config file with a config file from your own Azure ML Studio subscription.
+  - Upload the files to a notebook folder in the Notebooks section oof Azure ML Studio.
+  - Run the notebooks from top to bottom.
 
 ## Dataset
 
