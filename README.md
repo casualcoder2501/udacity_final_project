@@ -21,6 +21,9 @@ The DEATH_EVENT column is the outcome event that we are trying to predict and in
 
 ### Access
 The data was pulled into the workspace directly from the csv link provided here https://archive.ics.uci.edu/ml/machine-learning-databases/00519/heart_failure_clinical_records_dataset.csv using a Tabular Dataset object from_csv_files() function.
+```
+ds = Dataset.Tabular.from_delimited_files(path="https://archive.ics.uci.edu/ml/machine-learning-databases/00519/heart_failure_clinical_records_dataset.csv")
+```
 
 ## Automated ML
 *TODO*: Give an overview of the `automl` settings and configuration you used for this experiment
