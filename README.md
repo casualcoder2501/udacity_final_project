@@ -29,16 +29,22 @@ ds = Dataset.Tabular.from_delimited_files(path="https://archive.ics.uci.edu/ml/m
 For the AutoML experiment I used the config to set the task to classification and also to split the dataset into it's validation set and testing set during the experiment. Because I used a more robust compute resource than my Hyperdrive run my quota would only permit 2 nodes and so there are only 2 concurrent iterations at a time for the AutoML run.
 
 ```
+automl_settings ={
+    "task":'classification',
+    "primary_metric":'accuracy',
+    "training_data":data,
+    "validation_size":.1,
+    "test_size":.1,
+    "max_concurrent_iterations":2,
+    "label_column_name":'DEATH_EVENT',
+    "experiment_timeout_hours":1.0
+}
+
+
 automl_config = AutoMLConfig(
-    experiment_timeout_minutes=60,
-    task='classification',
-    primary_metric='accuracy',
-    training_data=data,
-    label_column_name='DEATH_EVENT',
-    validation_size=.1,
-    test_size=.1,
     compute_target=compute_target,
-    max_concurrent_iterations=2)
+    **automl_settings
+    )
 ```
 
 ### Results
